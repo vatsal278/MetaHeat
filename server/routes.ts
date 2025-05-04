@@ -1,9 +1,19 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
-import { db } from "@db";
-import { earlyAccessUsers, insertEarlyAccessUserSchema } from "@shared/schema";
-import { eq } from "drizzle-orm";
-import { ZodError } from "zod";
+
+// In-memory storage for wallet addresses and emails
+// Note: This will reset when the server restarts
+interface EarlyAccessUser {
+  id: number;
+  walletAddress: string;
+  email: string | null;
+  hasRequestedAccess: boolean;
+  joinedAt: string;
+}
+
+// Store users in memory
+let earlyAccessUsers: EarlyAccessUser[] = [];
+let nextId = 1;
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // API endpoint for wallet connection and early access requests
@@ -19,19 +29,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Check if wallet is already connected
-      const existingUser = await db.query.earlyAccessUsers.findFirst({
-        where: eq(earlyAccessUsers.walletAddress, walletAddress)
-      });
+      const existingUserIndex = earlyAccessUsers.findIndex(
+        user => user.walletAddress === walletAddress
+      );
       
-      if (existingUser) {
+      if (existingUserIndex !== -1) {
         // Update the record if it exists
-        await db
-          .update(earlyAccessUsers)
-          .set({ 
-            hasRequestedAccess: true,
-            ...(email ? { email } : {})
-          })
-          .where(eq(earlyAccessUsers.walletAddress, walletAddress));
+        earlyAccessUsers[existingUserIndex] = {
+          ...earlyAccessUsers[existingUserIndex],
+          hasRequestedAccess: true,
+          ...(email ? { email } : {})
+        };
           
         return res.status(200).json({ 
           success: true, 
@@ -40,18 +48,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      // Validate the data
-      const validatedData = insertEarlyAccessUserSchema.parse({
+      // Create new user
+      const newUser: EarlyAccessUser = {
+        id: nextId++,
         walletAddress,
-        email: email || undefined,
-        hasRequestedAccess: true
-      });
+        email: email || null,
+        hasRequestedAccess: true,
+        joinedAt: new Date().toISOString()
+      };
       
-      // Store in the database
-      const [newUser] = await db
-        .insert(earlyAccessUsers)
-        .values(validatedData)
-        .returning();
+      // Add to the in-memory array
+      earlyAccessUsers.push(newUser);
       
       return res.status(201).json({ 
         success: true, 
@@ -65,14 +72,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       console.error('Error connecting wallet:', error);
-      
-      if (error instanceof ZodError) {
-        return res.status(400).json({ 
-          success: false, 
-          message: 'Invalid data provided',
-          errors: error.errors
-        });
-      }
       
       return res.status(500).json({ 
         success: false, 
@@ -94,9 +93,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Check if wallet exists in our early access list
-      const user = await db.query.earlyAccessUsers.findFirst({
-        where: eq(earlyAccessUsers.walletAddress, address)
-      });
+      const user = earlyAccessUsers.find(user => user.walletAddress === address);
       
       if (!user) {
         return res.status(200).json({ 
@@ -124,14 +121,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all early access users (for admin purposes)
   app.get('/api/admin/early-access-users', async (_req: Request, res: Response) => {
     try {
-      const users = await db.query.earlyAccessUsers.findMany({
-        orderBy: (users, { desc }) => [desc(users.joinedAt)]
+      // Sort by joinedAt in descending order
+      const sortedUsers = [...earlyAccessUsers].sort((a, b) => {
+        return new Date(b.joinedAt).getTime() - new Date(a.joinedAt).getTime();
       });
       
       return res.status(200).json({ 
         success: true,
-        count: users.length,
-        users: users.map(user => ({
+        count: sortedUsers.length,
+        users: sortedUsers.map(user => ({
           id: user.id,
           walletAddress: user.walletAddress,
           joinedAt: user.joinedAt,
