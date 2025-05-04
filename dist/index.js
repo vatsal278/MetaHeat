@@ -212,52 +212,41 @@ function serveStatic(app2) {
 }
 
 // server/index.ts
+import path3 from "path";
+import { fileURLToPath as fileURLToPath3 } from "url";
+import http from "http";
+var __filename3 = fileURLToPath3(import.meta.url);
+var __dirname3 = path3.dirname(__filename3);
 var app = express2();
 app.use(express2.json());
 app.use(express2.urlencoded({ extended: false }));
 app.use((req, res, next) => {
   const start = Date.now();
-  const path3 = req.path;
+  const path4 = req.path;
   let capturedJsonResponse = void 0;
   const originalResJson = res.json;
-  res.json = function(bodyJson, ...args) {
+  res.json = function(bodyJson) {
     capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
+    return originalResJson.call(this, bodyJson);
   };
   res.on("finish", () => {
     const duration = Date.now() - start;
-    if (path3.startsWith("/api")) {
-      let logLine = `${req.method} ${path3} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "\u2026";
-      }
-      log(logLine);
-    }
+    log(
+      `[${res.statusCode}] ${path4} - ${duration}ms ${capturedJsonResponse ? JSON.stringify(capturedJsonResponse).slice(0, 100) : ""}`
+    );
   });
   next();
 });
 (async () => {
-  const server = await registerRoutes(app);
-  app.use((err, _req, res, _next) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-    res.status(status).json({ message });
-    throw err;
-  });
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
+  if (process.env.NODE_ENV === "production") {
+    serveStatic(app, __dirname3);
   } else {
-    serveStatic(app);
+    await setupVite(app);
   }
-  const port = 5e3;
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true
-  }, () => {
-    log(`serving on port ${port}`);
+  registerRoutes(app);
+  const PORT = process.env.PORT || 3e3;
+  const server = http.createServer(app);
+  server.listen(PORT, () => {
+    log(`Server running at http://localhost:${PORT}`);
   });
 })();
