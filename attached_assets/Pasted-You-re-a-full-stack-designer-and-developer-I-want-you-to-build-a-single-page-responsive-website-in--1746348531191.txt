@@ -1,0 +1,60 @@
+You’re a full-stack designer and developer. I want you to build a single-page responsive website in HTML/CSS/JS that looks futuristic, clean, and degen-friendly (think: Solana vibes + cyberpunk). This is the landing page for a powerful upcoming Solana project. Here’s the complete context of what we are doing — embed this info throughout the site in sections, buttons, tooltips, and layout:
+
+⸻
+
+Project Name: MetaHeat Engine (God-level trading OS for Solana meme coins)
+
+⸻
+
+What We’re Building:
+A GPT-powered, market-predicting engine for Solana meme coins that detects current and upcoming metas using a combination of real-time data and AI logic inspired by top degens and crypto whales. It scores each token by its “Meta Heat Score”, showing whether it’s an alpha, beta, or exit trap.
+
+We apply reverse psychology logic and narrative detection — so users don’t just follow volume; they predict the meta before it breaks. Our engine is powered by GPT-4 and real-time Solana metrics, using a 3-layer system:
+	•	Layer 1: Solana-wide context and narrative flow detection
+	•	Layer 2: Token-specific scoring using AI judgment
+	•	Layer 3: Narrative-based dashboard with sniper-tier insights
+	•	Bonus Layer: Capital compression logic and heat radar
+
+⸻
+
+Why This Matters:
+Right now, degens are manually hunting metas across Twitter, DEXs, and chatrooms. Our platform automates that entire process and reveals where capital is flowing, what’s about to break out, and how to act like a whale — before anyone else sees it.
+
+⸻
+
+Who It Helps:
+	•	Solana meme coin traders who want to front-run meta rotations
+	•	Builders launching tokens looking for optimal timing and themes
+	•	Researchers, CT alpha hunters, and smart money
+	•	Anyone tired of being exit liquidity
+
+⸻
+
+Website Requirements:
+	•	Hero section: “Introducing the MetaHeat Engine – Predict the Meta, Don’t Follow It”
+	•	Short pitch + beta access button (hooked to Solana wallet connect)
+	•	Wallet connect powered by Phantom or SolanaConnect
+	•	Sections:
+	•	What It Is
+	•	How It Works
+	•	Who It’s For
+	•	Roadmap (Phase 1: UI site, Phase 2: AI Engine launch, Phase 3: Full dashboard + tools)
+	•	Call to action: “Get Beta Access Now – Connect Wallet”
+	•	Footer with Twitter link, Discord invite (placeholder), and GitHub repo (placeholder)
+
+⸻
+
+Aesthetic Guidance:
+	•	Dark mode only
+	•	Glitchy neon hover effects (optional)
+	•	Bold but minimal type
+	•	Think futuristic hacker meets Solana trader
+	•	Mobile-first responsive design
+	•	Add a small “early access NFT” animation (placeholder image okay)
+
+⸻
+
+Functionality Required:
+	•	Wallet connect with Phantom
+	•	If wallet is connected, show: “You’re on the list.”
+	•	If not, show “Connect your wallet to claim early access.”
