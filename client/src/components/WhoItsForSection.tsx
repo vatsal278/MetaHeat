@@ -131,7 +131,7 @@ export const WhoItsForSection = ({ isConnected, onConnect }: WhoItsForSectionPro
           </motion.div>
         </motion.div>
         
-        {/* Early access NFT */}
+        {/* Early access  */}
         <motion.div 
           className="mt-16 flex flex-col md:flex-row items-center justify-center gap-8 bg-card/20 rounded-lg p-8 border border-primary/20"
           initial={{ opacity: 0, y: 20 }}
@@ -146,7 +146,7 @@ export const WhoItsForSection = ({ isConnected, onConnect }: WhoItsForSectionPro
                 <div className="absolute inset-0 bg-card/40 backdrop-blur-sm flex flex-col items-center justify-center">
                   <div className="text-center">
                     <div className="text-xs text-foreground/60 font-mono">EARLY ACCESS</div>
-                    <div className="text-2xl font-bold font-display bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mt-2">META<br/>HUNTER<br/>NFT</div>
+                    <div className="text-2xl font-bold font-display bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mt-2">META<br/>HUNTER<br/></div>
                     <div className="mt-4 text-xs font-mono text-foreground/60">#0001</div>
                   </div>
                 </div>
@@ -155,10 +155,10 @@ export const WhoItsForSection = ({ isConnected, onConnect }: WhoItsForSectionPro
           </div>
           
           <div className="w-full md:w-2/3 md:max-w-lg text-center md:text-left">
-            <h3 className="text-2xl font-bold font-display text-foreground mb-4">Get Early Access NFT</h3>
+            <h3 className="text-2xl font-bold font-display text-foreground mb-4">Get Early Access </h3>
             <p className="text-foreground/80 mb-6">Connect your wallet to secure priority access to the MetaHeat Engine. Early supporters receive exclusive features and benefits when we launch.</p>
             <WalletConnectButton 
-              id="nft-wallet-connect"
+              id="-wallet-connect"
               isConnected={isConnected}
               onConnect={onConnect}
               variant="accent"
