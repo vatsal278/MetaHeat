@@ -435,15 +435,10 @@ async function setupVite(app2, server) {
   });
 }
 function serveStatic(app2) {
-  const distPath = path2.resolve(import.meta.dirname, "public");
-  if (!fs.existsSync(distPath)) {
-    throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`
-    );
-  }
-  app2.use(express.static(distPath));
-  app2.use("*", (_req, res) => {
-    res.sendFile(path2.resolve(distPath, "index.html"));
+  const __dirname = path2.resolve();
+  app2.use(express.static(path2.join(__dirname, "dist/public")));
+  app2.get("*", (req, res) => {
+    res.sendFile(path2.join(__dirname, "dist/public", "index.html"));
   });
 }
 
@@ -488,7 +483,7 @@ app.use((req, res, next) => {
   } else {
     serveStatic(app);
   }
-  const port = 5e3;
+  const port = process.env.PORT || 5e3;
   server.listen({
     port,
     host: "0.0.0.0",
