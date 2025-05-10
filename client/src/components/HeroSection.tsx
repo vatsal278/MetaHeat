@@ -44,6 +44,15 @@ export const HeroSection = ({ isConnected, onConnect }: HeroSectionProps) => {
                 size="lg"
                 label="Get Beta Access Now"
               />
+              <a 
+                href="/beta" 
+                className="bg-gradient-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 text-foreground font-bold py-3 px-6 rounded-md transition duration-200 ease-in-out flex items-center justify-center"
+              >
+                Test Our Beta Now
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </a>
               <a href="#how-it-works" className="neon-border bg-card hover:bg-card/80 text-foreground font-bold py-3 px-6 rounded-md transition duration-200 ease-in-out flex items-center justify-center">
                 Learn More
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">

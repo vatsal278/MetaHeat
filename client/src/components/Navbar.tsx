@@ -55,12 +55,18 @@ export const Navbar = ({ onConnect }: NavbarProps) => {
             <a href="#roadmap" className="font-medium text-foreground/70 hover:text-foreground transition duration-150 ease-in-out glow-on-hover">
               Roadmap
             </a>
+            <Link 
+              href="/beta" 
+              className="font-medium text-accent-foreground bg-accent/90 hover:bg-accent px-3 py-1 rounded-md transition duration-150 ease-in-out flex items-center"
+            >
+              Beta
+            </Link>
             
             {/* Admin link - only visible when wallet is connected */}
             {isConnected && (
               <Link 
                 href="/admin" 
-                className="font-medium text-accent hover:text-accent/80 transition duration-150 ease-in-out glow-on-hover flex items-center"
+                className="font-medium text-primary hover:text-primary/80 transition duration-150 ease-in-out glow-on-hover flex items-center"
               >
                 <Layers size={16} className="mr-1" />
                 Admin
@@ -118,6 +124,13 @@ export const Navbar = ({ onConnect }: NavbarProps) => {
             >
               Roadmap
             </a>
+            <Link 
+              href="/beta" 
+              className="flex items-center px-3 py-2 rounded-md bg-accent/90 text-accent-foreground font-medium"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Beta
+            </Link>
             
             {/* Admin link - only visible when wallet is connected */}
             {isConnected && (
