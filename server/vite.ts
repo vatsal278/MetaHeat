@@ -68,12 +68,13 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: express.Express) {
-  const staticPath = path.resolve(__dirname, "../dist/public");
+  const __dirname = path.resolve(); // ensure you get the base path
 
-  app.use(express.static(staticPath));
+  // 1. Serve all static files from dist/public
+  app.use(express.static(path.join(__dirname, "dist/public")));
 
-  // Fallback to index.html for SPA routing
-  app.get("*", (_req, res) => {
-    res.sendFile(path.join(staticPath, "index.html"));
+  // 2. Serve index.html for any other request (client-side routing support)
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "dist/public", "index.html"));
   });
 }
